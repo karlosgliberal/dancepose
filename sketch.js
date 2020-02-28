@@ -101,8 +101,8 @@ function draw() {
   systemDos.applyForce(gravitydDos);
 
   repeller = new Repeller(
-    repellerPosition[0] + mouseX,
-    repellerPosition[1] + mouseY
+    (width / 2) * cos(frameCount * 0.01),
+    (height / 2) * sin(frameCount * 0.01)
   );
   repellerDos = new Repeller(
     repellerPositionDos[0] - mouseX,
@@ -222,11 +222,11 @@ class ParticleSystem {
 class Repeller {
   constructor(x, y) {
     this.position = new p5.Vector(x, y);
-    this.r = 5;
+    this.r = 10;
   }
 
   display() {
-    fill(245);
+    fill(10);
     ellipse(this.position.x, this.position.y, this.r * 2, this.r * 2);
   }
 
