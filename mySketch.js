@@ -48,7 +48,6 @@ function draw() {
   }
 
   image(video, 0, 0, width, height);
-
   drawParticles();
 
   for (let i = 0; i < particles.length; i++) {
@@ -56,7 +55,7 @@ function draw() {
   }
 
   for (let j = 0; j < particles.length; j++) {
-    if (particles[j].isFinished) {
+    if (particles[j].isFinished && frameCount % 50 == 0) {
       particles.splice(j, 1);
     }
   }
@@ -64,7 +63,7 @@ function draw() {
 
 function mousePressed() {
   if (!clicked) {
-    video.volume(0);
+    //video.volume(0);
     video.loop();
     clicked = true;
   }
@@ -96,7 +95,7 @@ function drawParticles() {
 
         particles.push(new Particle(X, Y, C, Rmax));
         particles.push(new Particle(X, Y, C, Rmax));
-        particles.push(new Particle(X, Y, C, Rmax));
+        //particles.push(new Particle(X, Y, C, Rmax));
       }
     }
   }
@@ -114,8 +113,8 @@ function Particle(tmpX, tmpY, tmpC, tmpRmax) {
   this.isDeg = false;
   this.isFinished = false;
   this.colorIndex = tmpC;
-  this.ySpeed = random(0.5, 3);
-  this.isFill = random(10) >= 5 ? true : false;
+  this.ySpeed = 2;
+  this.isFill = false;
   this.xNoise = random(1.0);
 
   this.display = function() {
@@ -155,7 +154,7 @@ function Particle(tmpX, tmpY, tmpC, tmpRmax) {
     //strokeWeight(4);
     //line(0, 0, 100, 100);
 
-    rect(3, 3, 3, 3);
+    rect(this.r * 2, this.r, this.r, this.r);
     strokeWeight(3);
     point(10, 10);
     // beginShape();
