@@ -26,7 +26,7 @@ function setup() {
   createCanvas(960, 540);
 
   // noCursor();
-  video = createVideo("fredastaire.mp4", videoLoaded);
+  video = createVideo("fredcorto.mp4", videoLoaded);
 
   poseNet = ml5.poseNet(video, modelReady);
   poseNet.on("pose", function(results) {
@@ -64,12 +64,18 @@ function draw() {
     text("CLICK TO PLAY", width / 2, height / 2);
   }
 
+  console.log(video.time());
+
   image(video, 0, 0, width, height);
   drawParticles();
 
-  if (video.time() > 4) {
+  if (video.time() >= 32 && video.time() <= 48) {
     paso = "uno";
   }
+
+  // if (video.time() >= 6 && video.time() <= 10) {
+  //   paso = "defualt";
+  // }
 
   for (let i = 0; i < particles.length; i++) {
     particles[i].display();
@@ -88,7 +94,7 @@ function draw() {
 
 function mousePressed() {
   if (!clicked) {
-    video.volume(0);
+    //video.volume(0);
     video.loop();
     clicked = true;
   }
@@ -199,12 +205,14 @@ function Particle(tmpX, tmpY, tmpC, tmpRmax, paso) {
     translate(this.pos.x, this.pos.y);
     rotate(this.theta);
 
-    rect(this.r, this.r, this.r, this.r);
-    strokeWeight(3);
-
     if (paso == "default") {
+      rect(this.r, this.r, this.r, this.r);
+      strokeWeight(3);
       point(10, 10);
+    } else if (paso == "uno") {
+      rect(this.r, this.r, this.r + 2, this.r + 2);
     }
+
     pop();
 
     this.theta += this.thetaSpeed;
