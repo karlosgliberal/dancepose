@@ -1,3 +1,15 @@
+/*
+nose - nariz
+Eye - ojo
+Ear - oreja
+Shoulder - hombro
+Elbow - code
+Wrist - muñeca
+Hip - cadera
+Knee -rodilla
+Ankle - tobillo
+*/
+
 let video;
 let poseNet;
 let poses = [];
@@ -8,6 +20,7 @@ let ox, oy;
 let colors = [];
 const canvasScale = 0.5;
 let clicked = false;
+let paso = "default";
 
 function setup() {
   createCanvas(960, 540);
@@ -50,6 +63,10 @@ function draw() {
   image(video, 0, 0, width, height);
   drawParticles();
 
+  if (video.time() > 4) {
+    paso = "uno";
+  }
+
   for (let i = 0; i < particles.length; i++) {
     particles[i].display();
   }
@@ -75,34 +92,51 @@ function drawParticles() {
     for (let j = 0; j < pose.keypoints.length; j++) {
       let keypoint = pose.keypoints[j];
 
-      if (
-        frameCount % 2 == 0 &&
-        (keypoint.part === "rightWrist" || keypoint.part === "leftWrist") &&
-        keypoint.score > 0.15
-      ) {
-        let targetX = keypoint.position.x;
-        let targetY = keypoint.position.y;
-
-        let randomTheta = random(360);
-        let randomR = random(5);
-
-        let X = targetX + randomR * cos(randomTheta);
-        let Y = targetY + randomR * sin(randomTheta);
-
-        let dis = dist(targetX, targetY, X, Y);
-        let C = floor(random(3));
-        let Rmax = dis > 55 ? 65 - dis : random(2, 8);
-
-        particles.push(new Particle(X, Y, C, Rmax));
-        particles.push(new Particle(X, Y, C, Rmax));
-        //particles.push(new Particle(X, Y, C, Rmax));
+      switch (paso) {
+        case "uno":
+          if (
+            frameCount % 2 == 0 &&
+            (keypoint.part === "rightAnkle" || keypoint.part === "leftAnkle") &&
+            keypoint.score > 0.15
+          ) {
+            createParticle(keypoint.position.x, keypoint.position.y, paso);
+          }
+          break;
+        default:
+          if (
+            frameCount % 2 == 0 &&
+            (keypoint.part === "rightWrist" || keypoint.part === "leftWrist") &&
+            keypoint.score > 0.15
+          ) {
+            createParticle(keypoint.position.x, keypoint.position.y, paso);
+          }
       }
     }
   }
 }
 
-function Particle(tmpX, tmpY, tmpC, tmpRmax) {
+function createParticle(keypointx, keypointy, paso) {
+  let targetX = keypointx;
+  let targetY = keypointy;
+
+  let randomTheta = random(360);
+  let randomR = random(5);
+
+  let X = targetX + randomR * cos(randomTheta);
+  let Y = targetY + randomR * sin(randomTheta);
+
+  let dis = dist(targetX, targetY, X, Y);
+  let C = floor(random(3));
+  let Rmax = dis > 55 ? 65 - dis : random(2, 8);
+
+  particles.push(new Particle(X, Y, C, Rmax, paso));
+  particles.push(new Particle(X, Y, C, Rmax, paso));
+  //particles.push(new Particle(X, Y, C, Rmax));
+}
+
+function Particle(tmpX, tmpY, tmpC, tmpRmax, paso) {
   this.pos = createVector(tmpX, tmpY);
+  this.paso = paso;
   this.rMax = tmpRmax;
   this.theta = random(360);
   this.thetaSpeed = random(-4);
@@ -151,21 +185,18 @@ function Particle(tmpX, tmpY, tmpC, tmpRmax) {
     push();
     translate(this.pos.x, this.pos.y);
     rotate(this.theta);
-    //strokeWeight(4);
-    //line(0, 0, 100, 100);
 
     rect(this.r * 2, this.r, this.r, this.r);
     strokeWeight(3);
     point(10, 10);
-    // beginShape();
-    // for (let i = 0; i < 6; i++) {
-    //   vertex(this.r * cos((i * 360) / 3), this.r * sin((i * 360) / 3));
-    // }
-    // endShape(CLOSE);
     pop();
 
     this.theta += this.thetaSpeed;
-    this.pos.y += this.ySpeed;
+    if (paso == "default") {
+      this.pos.y -= this.ySpeed;
+    } else {
+      this.pos.y += this.ySpeed;
+    }
     //this.pos.x -= this.ySpeed;
     this.xNoise += 0.01;
   };
