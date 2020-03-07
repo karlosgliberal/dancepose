@@ -57,7 +57,7 @@ function draw() {
 
   for (let j = 0; j < particles.length; j++) {
     if (particles[j].isFinished) {
-      //particles.splice(j, 1);
+      particles.splice(j, 1);
     }
   }
 }
@@ -95,6 +95,8 @@ function drawParticles() {
         let Rmax = dis > 55 ? 65 - dis : random(2, 8);
 
         particles.push(new Particle(X, Y, C, Rmax));
+        particles.push(new Particle(X, Y, C, Rmax));
+        particles.push(new Particle(X, Y, C, Rmax));
       }
     }
   }
@@ -127,7 +129,6 @@ function Particle(tmpX, tmpY, tmpC, tmpRmax) {
       }
     } else {
       this.r = this.rMax * e.circularOut(this.delta);
-
       this.delta -= this.speed * 1.5;
       if (this.delta < 0.0) {
         this.delta = 0.0;
@@ -153,11 +154,15 @@ function Particle(tmpX, tmpY, tmpC, tmpRmax) {
     rotate(this.theta);
     //strokeWeight(4);
     //line(0, 0, 100, 100);
-    beginShape();
-    for (let i = 0; i < 6; i++) {
-      vertex(this.r * cos((i * 360) / 3), this.r * sin((i * 360) / 3));
-    }
-    endShape(CLOSE);
+
+    rect(3, 3, 3, 3);
+    strokeWeight(3);
+    point(10, 10);
+    // beginShape();
+    // for (let i = 0; i < 6; i++) {
+    //   vertex(this.r * cos((i * 360) / 3), this.r * sin((i * 360) / 3));
+    // }
+    // endShape(CLOSE);
     pop();
 
     this.theta += this.thetaSpeed;
