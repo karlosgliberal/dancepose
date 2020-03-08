@@ -10,7 +10,8 @@
         <script language="javascript" type="text/javascript" src="p5.gui.js"></script>
         <script src="https://unpkg.com/ml5@0.4.3/dist/ml5.min.js"></script>
         <script language="javascript" type="text/javascript" src="mySketch.js"></script>
-
+        <link rel="stylesheet" href="./style.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
         <style>
             body {
                 background-color: black;
@@ -42,4 +43,37 @@
     </head>
     <img class="imagen" src="./dancepose.png" alt="">
     <div id="daceCanvas"></div>
+    <footer class="d-flex fixed-bottom justify-content-between p-3">
+        <div class="home--atrib cd-flex align-items-center align-self-end">
+            <p class="pl-3">
+                All of the processing happens locally in the browser using
+                <a href="https://ml5js.org/" target=" _blank">Ml5js</a>,
+                <a href="https://www.tensorflow.org/js/" target="_blank">TensorFlow.js</a>
+                and
+                <a href="http://p5js.org" target="_blank">P5.js</a>
+            </p>
+
+            <p class="pl-3 pb-1">
+                Created by
+                <a href="https://medium.com/@patxangas">karlosgliberal</a>
+                in
+                <a href="http://biko2.com">Biko</a>. Code of project
+                <a href="https://github.com/karlosgliberal/watercolormelodymachine">
+                    Github</a>
+            </p>
+        </div>
+
+        <div class="d-flex">
+            <div class="pr-2">
+                <a href="https://magenta.tensorflow.org">
+                    <img src="/assets/images/ml5.png" alt="Ml5js">
+                </a>
+            </div>
+            <div class="align-self-center">
+                <a href="https://www.biko2.com/bikolabs-creatividad-pirata/">
+                    <img src="/assets/images/logo-bikolabs.png" alt="Bikolabs">
+                </a>
+            </div>
+        </div>
+    </footer>
 </html>

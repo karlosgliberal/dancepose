@@ -24,26 +24,26 @@ let clicked = false;
 let paso = "Wrist";
 var bodyPoint = [
   //"Nose",
+  "Wrist",
   "Eye",
   "Ear",
   "Shoulder",
   "Elbow",
-  "Wrist",
   "Hip",
   "Knee",
   "Ankle"
 ];
 
+//GUI
 var volumen = 0.8;
 var volumenMin = 0;
 var volumenMax = 1;
 var volumenStep = 0.1;
-
-var soundState = false;
-
+var sound = false;
+var pause = false;
+var choreography = true;
 var gui;
-
-let bodyPointButton;
+//end gui
 
 function setup() {
   gui = createGui("Dance Pose");
@@ -73,8 +73,7 @@ function setup() {
   strokeJoin(ROUND);
   textAlign(CENTER, CENTER);
   textSize(40);
-
-  gui.addGlobals("volumen", "soundState", "bodyPoint");
+  gui.addGlobals("volumen", "sound", "bodyPoint", "pause", "choreography");
 }
 
 function videoLoaded() {
@@ -90,9 +89,16 @@ function draw() {
   if (!clicked) {
     text("PLAY", width / 2, height / 2);
   }
-  paso = bodyPoint;
 
-  if (soundState) {
+  if (clicked) {
+    if (pause) {
+      video.pause();
+    } else {
+      video.play();
+    }
+  }
+
+  if (sound) {
     video.volume(volumen);
   } else {
     video.volume(0);
@@ -101,8 +107,12 @@ function draw() {
   image(video, 0, 0, width, height);
   drawParticles(paso);
 
-  if (video.time() >= 29.5 && video.time() <= 53) {
-    paso = "Ankle";
+  if (choreography) {
+    if (video.time() >= 29.5 && video.time() <= 53) {
+      paso = "Ankle";
+    }
+  } else {
+    paso = bodyPoint;
   }
 
   for (let i = 0; i < particles.length; i++) {
