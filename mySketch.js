@@ -21,6 +21,17 @@ let colors = [];
 const canvasScale = 0.5;
 let clicked = false;
 let paso = "default";
+let bodyPoint = [
+  "nose",
+  "eye",
+  "ear",
+  "shoulder",
+  "elbow",
+  "wrist",
+  "hip",
+  "knee",
+  "ankl"
+];
 
 function setup() {
   createCanvas(960, 540);
@@ -69,13 +80,9 @@ function draw() {
   image(video, 0, 0, width, height);
   drawParticles();
 
-  if (video.time() >= 32 && video.time() <= 48) {
+  if (video.time() >= 29.5 && video.time() <= 53) {
     paso = "uno";
   }
-
-  // if (video.time() >= 6 && video.time() <= 10) {
-  //   paso = "defualt";
-  // }
 
   for (let i = 0; i < particles.length; i++) {
     particles[i].display();
@@ -94,7 +101,7 @@ function draw() {
 
 function mousePressed() {
   if (!clicked) {
-    //video.volume(0);
+    video.volume(0);
     video.loop();
     clicked = true;
   }
@@ -150,27 +157,28 @@ function createParticle(keypointx, keypointy, paso) {
 
   particles.push(new Particle(X, Y, C, Rmax, paso));
   particles.push(new Particle(X, Y, C, Rmax, paso));
-  //particles.push(new Particle(X, Y, C, Rmax));
 }
 
-function Particle(tmpX, tmpY, tmpC, tmpRmax, paso) {
-  this.pos = createVector(tmpX, tmpY);
-  this.paso = paso;
-  this.rMax = tmpRmax;
-  this.theta = random(360);
-  this.thetaSpeed = random(-4);
-  this.r = 0;
-  this.delta = 0;
-  this.speed = (1 * 1.5) / 30;
-  this.life = this.rMax * 2;
-  this.isDeg = false;
-  this.isFinished = false;
-  this.colorIndex = tmpC;
-  this.ySpeed = 2;
-  this.isFill = false;
-  this.xNoise = random(1.0);
+class Particlez {
+  constructor(tmpX, tmpY, tmpC, tmpRmax, paso) {
+    this.pos = createVector(tmpX, tmpY);
+    this.paso = paso;
+    this.rMax = tmpRmax;
+    this.theta = random(360);
+    this.thetaSpeed = random(-4);
+    this.r = 0;
+    this.delta = 0;
+    this.speed = (1 * 1.5) / 30;
+    this.life = this.rMax * 2;
+    this.isDeg = false;
+    this.isFinished = false;
+    this.colorIndex = tmpC;
+    this.ySpeed = 2;
+    this.isFill = false;
+    this.xNoise = random(1.0);
+  }
 
-  this.display = function() {
+  display() {
     if (!this.isDeg) {
       this.r = this.rMax * e.circularOut(this.delta);
 
@@ -191,7 +199,7 @@ function Particle(tmpX, tmpY, tmpC, tmpRmax, paso) {
     fill(colors[this.colorIndex]);
     noStroke();
 
-    this.pos.x = tmpX + this.xNoise + map(noise(this.xNoise), 0, 1, -10, 50);
+    this.pos.x = this.pos.x; // + this.xNoise + map(noise(this.xNoise), 0, 1, -5, 5);
 
     if (this.isFill) {
       fill(colors[this.colorIndex]);
@@ -210,7 +218,7 @@ function Particle(tmpX, tmpY, tmpC, tmpRmax, paso) {
       strokeWeight(3);
       point(10, 10);
     } else if (paso == "uno") {
-      rect(this.r, this.r, this.r + 2, this.r + 2);
+      rect(this.r, this.r, this.r + 4, this.r + 4);
     }
 
     pop();
@@ -223,5 +231,5 @@ function Particle(tmpX, tmpY, tmpC, tmpRmax, paso) {
     }
     //this.pos.x -= this.ySpeed;
     this.xNoise += 0.01;
-  };
+  }
 }
