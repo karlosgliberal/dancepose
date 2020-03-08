@@ -22,7 +22,7 @@ let colors = [];
 const canvasScale = 0.5;
 let clicked = false;
 let paso = "Wrist";
-let bodyPoint = [
+var bodyPoint = [
   //"Nose",
   "Eye",
   "Ear",
@@ -34,9 +34,19 @@ let bodyPoint = [
   "Ankle"
 ];
 
+var volumen = 0.8;
+var volumenMin = 0;
+var volumenMax = 1;
+var volumenStep = 0.1;
+
+var soundState = false;
+
+var gui;
+
 let bodyPointButton;
 
 function setup() {
+  gui = createGui("Dance Pose");
   let canvas = createCanvas(960, 540);
   canvas.parent("daceCanvas");
 
@@ -57,20 +67,14 @@ function setup() {
   colors[4] = color(255, 255, 255, 220);
   colors[5] = color(1, 22, 39, 220);
 
-  bodyPointButton = createButton("Body point");
-  bodyPointButton.mousePressed(changePoint);
-
   strokeWeight(2);
   fill(255);
   angleMode(DEGREES);
   strokeJoin(ROUND);
   textAlign(CENTER, CENTER);
   textSize(40);
-}
 
-function changePoint() {
-  pasonRandom = floor(random(bodyPoint.length));
-  paso = bodyPoint[pasonRandom];
+  gui.addGlobals("volumen", "soundState", "bodyPoint");
 }
 
 function videoLoaded() {
@@ -83,9 +87,15 @@ function modelReady() {
 
 function draw() {
   background(0);
-
   if (!clicked) {
     text("PLAY", width / 2, height / 2);
+  }
+  paso = bodyPoint;
+
+  if (soundState) {
+    video.volume(volumen);
+  } else {
+    video.volume(0);
   }
 
   image(video, 0, 0, width, height);
@@ -132,35 +142,6 @@ function drawParticles(bodyPoint) {
     }
   }
 }
-
-// function drawParticles() {
-//   for (let i = 0; i < poses.length; i++) {
-//     let pose = poses[i].pose;
-//     for (let j = 0; j < pose.keypoints.length; j++) {
-//       let keypoint = pose.keypoints[j];
-
-//       switch (paso) {
-//         case "uno":
-//           if (
-//             frameCount % 2 == 0 &&
-//             (keypoint.part === "rightAnkle" || keypoint.part === "leftAnkle") &&
-//             keypoint.score > 0.15
-//           ) {
-//             createParticle(keypoint.position.x, keypoint.position.y, paso);
-//           }
-//           break;
-//         default:
-//           if (
-//             frameCount % 2 == 0 &&
-//             (keypoint.part === "rightWrist" || keypoint.part === "leftWrist") &&
-//             keypoint.score > 0.15
-//           ) {
-//             createParticle(keypoint.position.x, keypoint.position.y, paso);
-//           }
-//       }
-//     }
-//   }
-// }
 
 function createParticle(keypointx, keypointy, paso) {
   let targetX = keypointx;
