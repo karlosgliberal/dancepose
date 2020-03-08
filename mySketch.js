@@ -75,8 +75,6 @@ function draw() {
     text("CLICK TO PLAY", width / 2, height / 2);
   }
 
-  console.log(video.time());
-
   image(video, 0, 0, width, height);
   drawParticles();
 
@@ -169,19 +167,16 @@ class Particle {
     this.r = 0;
     this.delta = 0;
     this.speed = (1 * 1.5) / 30;
-    this.life = this.rMax * 2;
     this.isDeg = false;
     this.isFinished = false;
     this.colorIndex = tmpC;
     this.ySpeed = 2;
-    this.isFill = false;
     this.xNoise = random(1.0);
   }
 
   display() {
     if (!this.isDeg) {
-      this.r = this.rMax * e.circularOut(this.delta);
-
+      this.r = this.rMax * e.maclaurinCosine(this.delta);
       this.delta += this.speed;
       if (this.delta > 1.0) {
         this.delta = 1.0;
@@ -195,19 +190,10 @@ class Particle {
         this.isFinished = true;
       }
     }
+    //this.pos.x = this.pos.x + this.xNoise + map(noise(this.xNoise), 0, 1, -5, 5);
 
-    fill(colors[this.colorIndex]);
-    noStroke();
-
-    this.pos.x = this.pos.x; // + this.xNoise + map(noise(this.xNoise), 0, 1, -5, 5);
-
-    if (this.isFill) {
-      fill(colors[this.colorIndex]);
-      noStroke();
-    } else {
-      noFill();
-      stroke(colors[this.colorIndex]);
-    }
+    noFill();
+    stroke(colors[this.colorIndex]);
 
     push();
     translate(this.pos.x, this.pos.y);
