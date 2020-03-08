@@ -159,7 +159,7 @@ function createParticle(keypointx, keypointy, paso) {
   particles.push(new Particle(X, Y, C, Rmax, paso));
 }
 
-class Particlez {
+class Particle {
   constructor(tmpX, tmpY, tmpC, tmpRmax, paso) {
     this.pos = createVector(tmpX, tmpY);
     this.paso = paso;
