@@ -8,6 +8,7 @@ Wrist - muñeca
 Hip - cadera
 Knee -rodilla
 Ankle - tobillo
+https://eyeondesign.aiga.org/typography-dancing-like-its-never-danced-before-thanks-to-variable-font-technology/
 */
 
 let video;
@@ -36,9 +37,10 @@ let bodyPoint = [
 let bodyPointButton;
 
 function setup() {
-  createCanvas(960, 540);
+  let canvas = createCanvas(960, 540);
+  canvas.parent("daceCanvas");
 
-  // noCursor();
+  //noCursor();
   video = createVideo("fredcorto.mp4", videoLoaded);
 
   poseNet = ml5.poseNet(video, modelReady);
@@ -59,6 +61,7 @@ function setup() {
   bodyPointButton.mousePressed(changePoint);
 
   strokeWeight(2);
+  fill(255);
   angleMode(DEGREES);
   strokeJoin(ROUND);
   textAlign(CENTER, CENTER);
@@ -79,10 +82,10 @@ function modelReady() {
 }
 
 function draw() {
-  background(230);
+  background(0);
 
   if (!clicked) {
-    text("CLICK TO PLAY", width / 2, height / 2);
+    text("PLAY", width / 2, height / 2);
   }
 
   image(video, 0, 0, width, height);
@@ -107,7 +110,7 @@ function draw() {
 
 function mousePressed() {
   if (!clicked) {
-    //video.volume(0);
+    video.volume(0);
     video.loop();
     clicked = true;
   }
