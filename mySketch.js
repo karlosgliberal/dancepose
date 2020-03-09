@@ -39,9 +39,16 @@ var volumen = 0.8;
 var volumenMin = 0;
 var volumenMax = 1;
 var volumenStep = 0.1;
+
+var videoOpacidad = 255;
+var videoOpacidadMin = 0;
+var videoOpacidadMax = 255;
+var videoOpacidadStep = 5;
+
 var sound = false;
 var pause = false;
 var choreography = true;
+var videoImagen = true;
 var gui;
 //end gui
 
@@ -73,7 +80,15 @@ function setup() {
   strokeJoin(ROUND);
   textAlign(CENTER, CENTER);
   textSize(40);
-  gui.addGlobals("volumen", "sound", "bodyPoint", "pause", "choreography");
+  gui.addGlobals(
+    "volumen",
+    "sound",
+    "bodyPoint",
+    "pause",
+    "choreography",
+    "videoImagen",
+    "videoOpacidad"
+  );
 }
 
 function videoLoaded() {
@@ -104,7 +119,10 @@ function draw() {
     video.volume(0);
   }
 
-  image(video, 0, 0, width, height);
+  if (videoImagen) {
+    //tint(255, videoOpacidad);
+    image(video, 0, 0, width, height);
+  }
   drawParticles(paso);
 
   if (choreography) {
