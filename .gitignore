@@ -1,5 +1,6 @@
 # Logs
-*.mp4
+fredastaire.mp4
+fredcorto.mp4
 logs
 *.log
 npm-debug.log*
