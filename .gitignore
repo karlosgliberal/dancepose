@@ -2,6 +2,7 @@
 .DS_Store
 fredastaire.mp4
 fredcorto.mp4
+*.mp4
 logs
 *.log
 npm-debug.log*
