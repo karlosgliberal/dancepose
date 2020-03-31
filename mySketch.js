@@ -58,7 +58,7 @@ function setup() {
   canvas.parent("daceCanvas");
 
   //noCursor();
-  video = createVideo("fredcorto.mp4", videoLoaded);
+  video = createVideo("elvis.mp4", videoLoaded);
 
   poseNet = ml5.poseNet(video, modelReady);
   poseNet.on("pose", function(results) {
@@ -146,6 +146,8 @@ function draw() {
   }
 }
 
+function controls() {}
+
 function mousePressed() {
   if (!clicked) {
     video.volume(0);
@@ -184,14 +186,14 @@ function createParticle(keypointx, keypointy, paso) {
   let dis = dist(targetX, targetY, X, Y);
   let C;
 
-  C = floor(random(3));
+  //  C = floor(random(3));
 
-  //    C = floor(random(3, 6));
+  C = floor(random(3, 6));
 
   let Rmax = dis > 20 ? 35 - dis : random(2, 8);
 
   particles.push(new Particle(X, Y, C, Rmax, paso));
-  particles.push(new Particle(X, Y, C, Rmax, paso));
+  //  particles.push(new Particle(X, Y, C, Rmax, paso));
 }
 
 class Particle {
@@ -227,7 +229,8 @@ class Particle {
         this.isFinished = true;
       }
     }
-    //this.pos.x = this.pos.x + this.xNoise + map(noise(this.xNoise), 0, 1, -5, 5);
+    this.pos.x =
+      this.pos.x + this.xNoise + map(noise(this.xNoise), 0, 1, -5, 5);
 
     noFill();
     stroke(colors[this.colorIndex]);
@@ -239,7 +242,7 @@ class Particle {
     // if (paso == "default") {
     rect(this.r, this.r, this.r, this.r);
     strokeWeight(3);
-    point(10, 10);
+    //point(10, 10);
     // } else if (paso == "uno") {
     //   rect(this.r, this.r, this.r + 4, this.r + 4);
     // }
@@ -247,7 +250,8 @@ class Particle {
     pop();
 
     this.theta += this.thetaSpeed;
-    this.pos.y += this.ySpeed;
+    this.pos.y -= this.ySpeed;
+
     // if (paso == "default") {
     // } else {
     //   this.pos.y -= this.ySpeed;
